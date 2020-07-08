@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>WaveUI</title>
+    <style>
+      #load-overlay {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        bottom: 0;
+        left: 0px;
+        right: 0;
+        position: fixed;
+        display: block;
+        z-index: 5000;
+        background: #fff;
+      }
+      @media screen and (max-width: 768px) {
+        #load-overlay {
+          max-width: 768px;
+        }
+      }
+      @media screen and (max-width: 450px) {
+        #load-overlay {
+          max-width: 450px;
+        }
+      }
+      .preloader {
+        position: relative;
+        z-index: 5001;
+        width: 160px;
+        height: 20px;
+        margin: auto;
+        margin-top: 25%;
+        padding: 30px;
+        filter: url('#liquid');
+        -webkit-filter: url('#liquid');
+      }
+      .dot {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        -webkit-border-radius: 50% !important;
+        -moz-border-radius: 50%;
+      }
+
+      .blueDot {
+        left: 30px;
+        background: #2baee5;
+        -webkit-animation: blueDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99)
+          infinite;
+        animation: blueDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99)
+          infinite;
+      }
+
+      .redDot {
+        left: 59px;
+        background: #e53212;
+        -webkit-animation: redDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99)
+          infinite;
+        animation: redDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99) infinite;
+      }
+      .yellowDot {
+        left: 88px;
+        background: #ffd400;
+        -webkit-animation: yellowDotAnimation 4.3s
+          cubic-bezier(0.6, 0, 0.2, 0.99) infinite;
+        animation: yellowDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99)
+          infinite;
+      }
+      .greenDot {
+        left: 117px;
+        background: #31ad32;
+        -webkit-animation: greenDotAnimation 4.3s
+          cubic-bezier(0.6, 0, 0.2, 0.99) infinite;
+        animation: greenDotAnimation 4.3s cubic-bezier(0.6, 0, 0.2, 0.99)
+          infinite;
+      }
+
+      @keyframes blueDotAnimation {
+        25% {
+          left: 117px;
+        }
+        50% {
+          left: 88px;
+        }
+        75% {
+          left: 59px;
+        }
+        100% {
+          left: 30px;
+        }
+      }
+      @keyframes redDotAnimation {
+        25% {
+          left: 30px;
+        }
+        50% {
+          left: 117px;
+        }
+        75% {
+          left: 88px;
+        }
+        100% {
+          left: 59px;
+        }
+      }
+      @keyframes yellowDotAnimation {
+        25% {
+          left: 59px;
+        }
+        50% {
+          left: 30px;
+        }
+        75% {
+          left: 117px;
+        }
+        100% {
+          left: 88px;
+        }
+      }
+      @keyframes greenDotAnimation {
+        25% {
+          left: 88px;
+        }
+        50% {
+          left: 59px;
+        }
+        75% {
+          left: 30px;
+        }
+        100% {
+          left: 117px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="load-overlay">
+      <div class="preloader ">
+        <div class="dot blueDot"></div>
+        <div class="dot redDot"></div>
+        <div class="dot yellowDot"></div>
+        <div class="dot greenDot"></div>
+      </div>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        viewBox="0 0 1000 500"
+      >
+        <defs>
+          <filter
+            id="liquid"
+            x="-50%"
+            width="200%"
+            y="-50%"
+            height="200%"
+            color-interpolation-filters="sRGB"
+          >
+            <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+              result="ColorMatrix"
+            />
+            <feColorMatrix
+              in="ColorMatrix"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 6 -3"
+              result="ColorMatrix2"
+            />
+            <!-- <feBlend in="SourceGraphic" in2="ColorMatrix" result="Blend" /> -->
+          </filter>
+        </defs>
+      </svg>
+      <script>
+        let feGaussianBlur = document
+          .querySelector('#liquid')
+          .getElementsByTagName('feGaussianBlur')[0]
+
+        let browserType = navigator.userAgent.toLowerCase()
+        let browserVendor = navigator.vendor.toLowerCase()
+
+        var is_safari =
+          browserType.includes('safari') &&
+          !browserType.includes('opr') &&
+          !browserType.includes('firefox') &&
+          !browserVendor.includes('google')
+
+        if (is_safari) {
+          document.querySelector('#liquid').removeChild(feGaussianBlur)
+        }
+      </script>
+    </div>
+
+    <aida-navbar>
+      <header class="navbar">
+        <nav class="container navbar__container">
+          <a class="navbar__logo" href="#" title="AIDA Kreuzfahrten Logo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 100 38"
+              width="70px"
+            >
+              <defs>
+                <clipPath id="a">
+                  <rect x="3.5" y="5.45" width="93" height="37.1" fill="none" />
+                </clipPath>
+              </defs>
+              <path
+                d="M52.92,17.3,47.73,30.8h3.73l.93-2.35h4.83l.87,2.35h3.75L56.75,17.3Zm1.88,4.17h0l1.43,4.3H53.35Z"
+                fill="#2baee5"
+              />
+              <rect
+                x="63.48"
+                y="17.3"
+                width="3.51"
+                height="13.5"
+                fill="#e53212"
+              />
+              <g clip-path="url(#a)">
+                <path
+                  d="M70.3,17.3h5a6.75,6.75,0,1,1,0,13.5h-5Zm3.51,10.53h.78a3.55,3.55,0,0,0,3.89-3.78,3.56,3.56,0,0,0-3.85-3.78h-.82Z"
+                  fill="#ffd400"
+                />
+              </g>
+              <path
+                d="M89.47,21.47h0l1.43,4.3H88ZM87.59,17.3,82.4,30.8h3.72l.93-2.35h4.83l.88,2.35H96.5L91.42,17.3Z"
+                fill="#51ad32"
+              />
+              <g clip-path="url(#a)">
+                <path
+                  d="M4.72,5.71a.44.44,0,0,1,.77,0c2.81,3,5.61,5.28,7.75,5.27,4.85,0,7.11-3.63,12.67-3.93A12.27,12.27,0,0,1,37,12.57c1.07,1.33,1.17,2,1.38,2,.51-.44,3.51-3.34,5.07-4.71a11,11,0,0,1,1-.79c1.08-.7,2.17-.94,2.61-.44a1.78,1.78,0,0,1,.43,1.81c0,.58-.22,1.62,1.44.52,1.18-.79,1.71-1.56,2.11-1.68a.21.21,0,0,1,.26.18c0,.2-6.25,6.76-7.3,7.81-.81.81-8.61,9.37-10.07,11.66-.7,1.09-1.12,1.84-1.26,1.82-.37-.05-5.87.05-17.42-9.3C9.38,16.66,7.18,11.2,4,9.29A.72.72,0,0,1,3.62,8.2s1-2.39,1.1-2.49"
+                  fill="#160000"
+                />
+                <path
+                  d="M8.08,9.92s3.52,3.71,7.89,2.6,10.67-5.45,15.71-1.38a20.53,20.53,0,0,1,4.78,5.43c.72,1,.43,1.16,2.39-.87,2.17-2.1,6.8-7,7.67-5.43.65,1.09-.76,2.78,1.08,1.86l1.54-.74s-2.65,2.12-4.29,3.23c-1.21.91-2.67,2.31-4.05,2-1.59-.5-2.77,1.47-3.95,3.21-1.42,2.1-2.26,1.23-3.07.41a9.51,9.51,0,0,0-8.61-3.47c-4.68.52-7.68,0-10.5-1.6a39.05,39.05,0,0,1-6.59-5.2"
+                  fill="#e53212"
+                />
+                <path
+                  d="M8.08,9.92s3.52,3.71,7.89,2.6,10.67-5.45,15.71-1.38a20.53,20.53,0,0,1,4.78,5.43c.72,1,.43,1.16,2.39-.87,2.17-2.1,6.8-7,7.67-5.43.65,1.09-.76,2.78,1.08,1.86l1.54-.74s-2.65,2.12-4.29,3.23c-1.21.91-2.67,2.31-4.05,2-1.59-.5-2.77,1.47-3.95,3.21-1.42,2.1-2.26,1.23-3.07.41a9.51,9.51,0,0,0-8.61-3.47c-4.68.52-7.68,0-10.5-1.6A39.05,39.05,0,0,1,8.08,9.92Z"
+                  fill="none"
+                  stroke="#200"
+                  stroke-width="0.2"
+                />
+                <path
+                  d="M9.42,12.67s5.16,6.3,11.84,6,7.45-.21,10.78,2.68c2.25,1.81,2.77,3.13,5.14-.8,1.3-1.95,2.32-3.76,3.77-3.25,1.88.65,4.63-2.67,4.63-2.67-.15.29-9.26,8.91-12.16,13.16-.73,1-.77.81-2,.51s-12.38-3.84-22-15.63"
+                  fill="#e53212"
+                />
+                <path
+                  d="M9.42,12.67s5.16,6.3,11.84,6,7.45-.21,10.78,2.68c2.25,1.81,2.77,3.13,5.14-.8,1.3-1.95,2.32-3.76,3.77-3.25,1.88.65,4.63-2.67,4.63-2.67-.15.29-9.26,8.91-12.16,13.16-.73,1-.77.81-2,.51S19.08,24.46,9.42,12.67Z"
+                  fill="none"
+                  stroke="#200"
+                  stroke-width="0.2"
+                />
+              </g>
+            </svg>
+          </a>
+
+          <button class="navbar__burger  ">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div class=" navbar__nav--level-1 ">
+            <div class="navbar__item navbar__item--search">
+              <div class="navbar__form-input form-input form-input--search">
+                <input
+                  class="input--search"
+                  type="text"
+                  value=""
+                  placeholder="Suche"
+                />
+              </div>
+            </div>
+
+            <div class="navbar__item submenu ">
+              <span class="navbar__link submenu-header">Home </span>
+            </div>
+
+            <div class="navbar__item submenu ">
+              <span class="navbar__link submenu-header"
+                >Buchen
+
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 50 50"
+                    width="13"
+                  >
+                    <path
+                      d="M25,39,48.19,15.78h0A2.74,2.74,0,0,0,49,13.8a2.79,2.79,0,0,0-4.75-2h0l0,0L25,31.08,5.81,11.92l-.09-.09,0,0h0a2.79,2.79,0,0,0-3.94,3.95h0Z"
+                    />
+                  </svg>
+                </div>
+              </span>
+              <ul class="navbar__nav--level-2">
+                <li class="navbar__item submenu-item">
+                  <a class="navbar__link" href="#">Angebote &amp; Buchen</a>
+                </li>
+
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Preismodell</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Gutschein</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Reisebürofinder</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="navbar__item submenu">
+              <span class="navbar__link submenu-header"
+                >Entdecken
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 50 50"
+                    width="13"
+                  >
+                    <path
+                      d="M25,39,48.19,15.78h0A2.74,2.74,0,0,0,49,13.8a2.79,2.79,0,0,0-4.75-2h0l0,0L25,31.08,5.81,11.92l-.09-.09,0,0h0a2.79,2.79,0,0,0-3.94,3.95h0Z"
+                    />
+                  </svg>
+                </div>
+              </span>
+              <ul class="navbar__nav--level-2">
+                <li class="navbar__item submenu-item">
+                  <a class="navbar__link" href="#">Schiffe</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Ziele</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Katalog</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Reisen mit AIDA</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Reisevorbereitung</a>
+                </li>
+              </ul>
+            </div>
+            <div class="navbar__item submenu">
+              <span class="navbar__link submenu-header" data-nav-3-activator
+                >MyAIDA
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 50 50"
+                    width="13"
+                  >
+                    <path
+                      d="M25,39,48.19,15.78h0A2.74,2.74,0,0,0,49,13.8a2.79,2.79,0,0,0-4.75-2h0l0,0L25,31.08,5.81,11.92l-.09-.09,0,0h0a2.79,2.79,0,0,0-3.94,3.95h0Z"
+                    />
+                  </svg>
+                </div>
+              </span>
+              <ul class=" navbar__nav--level-2">
+                <li class="navbar__item submenu-item">
+                  <a class="navbar__link" href="#">Login</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Club</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">AIDA App</a>
+                </li>
+                <li class="navbar__item">
+                  <a
+                    class="navbar__link"
+                    href="https://www.aida-lounge.de/entdecken"
+                    >AIDA Momente</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="navbar__item submenu">
+              <span class="navbar__link submenu-header"
+                >Unternehmen
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 50 50"
+                    width="13"
+                  >
+                    <path
+                      d="M25,39,48.19,15.78h0A2.74,2.74,0,0,0,49,13.8a2.79,2.79,0,0,0-4.75-2h0l0,0L25,31.08,5.81,11.92l-.09-.09,0,0h0a2.79,2.79,0,0,0-3.94,3.95h0Z"
+                    />
+                  </svg>
+                </div>
+              </span>
+              <ul class="navbar__nav--level-2">
+                <li class="navbar__item submenu-item">
+                  <a class="navbar__link" href="#">Nachhaltigkeit</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Karriere</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Presse</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Cruise &amp; Help</a>
+                </li>
+                <li class="navbar__item">
+                  <a class="navbar__link" href="#">Über uns</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <ul class="navbar__nav navbar__nav--right">
+            <li class="navbar__item">
+              <a class="navbar__link" href="tel:+4938120270722" title="Telefon">
+                <span class="d-none d-sm-block mr-3 telefon">0381 202 707 22</span>
+                <i class="navbar__icon aicon-phone aicon--dark"></i>
+              </a>
+            </li>
+
+            <li class="navbar__item login_ref">
+              <a class="navbar__link   " href="#" title="MyAIDA">
+                <i class="navbar__icon aicon-avatar aicon--dark"></i>
+              </a>
+            </li>
+          </ul>
+          <!-- <div class="navbar__myaida"></div> -->
+        </nav>
+      </header>
+      <div class="navbar__flyout-bg"></div>
+
+      <div class="container navbar__login ">
+        <div class="pt-3 w-100">
+          <div class="login-page__login-title-wrapper">
+            <h2 class="account-page__title">Anmeldung</h2>
+
+            <p class="account-page__subtitle">zu Ihrem neuen AIDA Profil</p>
+          </div>
+
+          <div class="account-page__form-wrapper">
+            <form>
+              <div class="pb-4 login-form__input-wrapper">
+                <div class="login-form__input-row">
+                  <span
+                    class="login-form__mail login-form__nav-wide d-block form-input"
+                  >
+                    <label>
+                      <input name="" type="text" />
+                      <span class="form-input__label"
+                        >Ihre E-Mail-Adresse
+                      </span>
+                    </label>
+                  </span>
+
+                  <span
+                    class="login-form__password login-form__nav-wide d-block form-input"
+                  >
+                    <label>
+                      <input
+                        name="customer_login[password]"
+                        phx-debounce="blur"
+                        type="password"
+                      />
+                      <span data-inwr-label="" class="form-input__label"
+                        >Passwort</span
+                      >
+                    </label>
+                  </span>
+
+                  <div class="login-form__button login-form__nav-small">
+                    <button class="btn text-uppercase btn--block" type="submit">
+                      Anmelden
+                    </button>
+                  </div>
+                </div>
+                <div class="login-form__input-row">
+                  <div class="checkbox mt-3" style="flex-basis: 40%;">
+                    <input
+                      name="customer_login[keep_login]"
+                      type="hidden"
+                      value="false"
+                    />
+                    <input
+                      class="checkbox__input"
+                      id="keep_login_b"
+                      name="customer_login[keep_login]"
+                      type="checkbox"
+                      value="true"
+                      checked=""
+                    />
+                    <label class="checkbox__label" for="keep_login_b"
+                      >Angemeldet bleiben.
+                    </label>
+                    <aida-modal
+                      classToggle="d-block"
+                      toggleId="modal_login_details"
+                    >
+                      <a data-md-activator>Details</a>
+                    </aida-modal>
+                  </div>
+                  <div class="login-form__forgot-password">
+                    <a href="/account/forgot-password">Passwort vergessen?</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="account-page__cta-wrapper">
+          <p class="account-page__cta-text">
+            Sie haben noch kein AIDA Profil?
+          </p>
+
+          <a class="account-page__cta-link" href="/account/new">
+            Jetzt kostenlos registrieren</a
+          >
+        </div>
+      </div>
+
+      <div class="navbar__login__flyout-bg "></div>
+    </aida-navbar>
+  </body>
+</html>
